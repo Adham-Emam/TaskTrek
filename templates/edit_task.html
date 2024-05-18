@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block style %}
+    <style>
+        .task-page {
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+        .task-page p {
+            line-height: 1.5;
+        }
+        .task-page a {
+            display: block;
+            width: fit-content !important;
+            background-color: var(--dark-green);
+            color: var(--header-color);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 20px auto;
+            box-shadow: 0 2px 5px 0 #010101;
+            transition-duration: 0.5s;
+        }
+        .task-page a:hover {
+            box-shadow: 0 5px 5px 0 #010101;
+        }
+        .task-page .check-completed {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container task-page">
+    <div class="form-section">
+        <h2>{{ title }}</h2>
+        <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.title(placeholder="Task Title", class="form-control") }}
+            </div>
+            <div>
+                {{ form.description(placeholder="Task Description", class="form-control") }}
+            </div>
+            <div class="check-completed">
+                {{ form.completed }}
+                <label for="completed">Task Completed</label>
+            </div>
+            <div>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

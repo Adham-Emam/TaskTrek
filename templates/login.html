@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="form-section">
+        <h2>Login</h2>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.username(class="form-control") if form.username }}
+            </div>
+            <div>
+                {{ form.email(class="form-control") }}
+            </div>
+            <div>
+                {{ form.password(class="form-control") }}
+            </div>
+            {% if form.confirm_password %}
+            <div>
+                {{ form.confirm_password(class="form-control") }}
+            </div>
+            {% endif %}
+            <div>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        <p>Don't have an account yet <a href="{{ url_for('register')}}">Register</a></p>
+    </div>
+</div>
+{% endblock %}

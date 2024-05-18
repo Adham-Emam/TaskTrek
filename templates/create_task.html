@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="form-section">
+            <h2>{{ title }}</h2>
+            <form method="POST" action="{{ url_for('create_task') }}">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.title(placeholder="Task Title", class="form-control") }}
+                </div>
+                <div>
+                    {{ form.description(placeholder="Task Description", class="form-control") }}
+                </div>
+                <div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

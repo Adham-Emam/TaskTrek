@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block links %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<section id="home">
+    <div class="container">
+        <div class="control-panel">
+            <form method="get" action="{{ url_for('home') }}">
+                <div class="search-bar">
+                    <input type="text" name="q" placeholder="Search for tasks">
+                    <button value="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <a href="{{ url_for('create_task') }}" title="Create new task">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </form>
+        </div>
+        <div class="tasks-container">
+            {% if authentication %}
+                {% if tasks %}
+                    <h3>Active Tasks</h3>
+                {% endif %}
+                {% for task in tasks %}
+                <div class="task">
+                    <div>
+                        <h4>{{ task.title }}</h4>
+                        <p>{{ task.description }}</p>
+                    </div>
+                    <div class="commands">
+                        <form method="POST" action="{{ url_for('complete_task', task_id=task.id) }}">
+                            <input type="checkbox" name="completed" onchange="this.form.submit()" >
+                        </form>
+                        <a class="edit" href="{{ url_for('edit_task', task_id=task.id) }}"><i class="fa-solid fa-edit"></i></a>
+                        <a class="delete" href="{{ url_for('delete_task', task_id=task.id) }}"><i class="fa-solid fa-x"></i></a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% if completed %}
+                <div class="tasks-header">
+                    <h3>Completed Tasks</h3>
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
+                {% endif %}
+                <div class="completed-tasks">
+                        {% for task in completed %}
+                        <a href="{{ url_for('edit_task', task_id=task.id) }}">
+                        <div class="task completed ">
+                            <div>
+                                <h4>{{ task.title }}</h4>
+                                <p>{{ task.description }}</p>
+                            </div>
+                            <div class="commands">
+                                <form method="POST" action="{{ url_for('complete_task', task_id=task.id) }}">
+                                    <input type="checkbox" name="completed" checked onchange="this.form.submit()" >
+                                </form>
+                                <a class="edit" href="{{ url_for('edit_task', task_id=task.id) }}"><i class="fa-solid fa-edit"></i></a>
+                                <a class="delete" href="{{ url_for('delete_task', task_id=task.id) }}"><i class="fa-solid fa-x"></i></a>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-tasks">Not Logged in, <a href="{{ url_for('login') }}">Login</a> to create your first task</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts%}
+    <script>
+        const btn = document.querySelector('.tasks-header .fa-solid')
+        const completed_task = document.querySelector('.completed-tasks')
+
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('fa-angle-down')
+            btn.classList.toggle('fa-angle-up')
+            completed_task.classList.toggle('hidden')
+        })
+    </script>
+{% endblock %}
